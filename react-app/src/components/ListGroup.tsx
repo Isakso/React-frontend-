@@ -16,16 +16,19 @@ function ListGroup() {
     day: "",
     complete: false,
   });
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL; 
+
   // Fetch todos on component mount
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await fetch("${apiUrl}/todos");
+        console.log(`Fetching todos from: ${apiUrl}/todos`);
+        const response = await fetch(`${apiUrl}/todos`); 
         if (!response.ok) {
           throw new Error("Failed to fetch todos");
         }
         const data: TodoItem[] = await response.json();
+        console.log("Fetched todos:", data);
         setItems(data);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -77,7 +80,7 @@ function ListGroup() {
     }
   };
 
-  // Track selected item for highlighting
+  // track selected item for highlighting
   const [selectedItem, setSelectedItem] = useState<TodoItem | null>(null);
 
   const handleClick = (event: MouseEvent, item: TodoItem) => {
@@ -89,7 +92,7 @@ function ListGroup() {
     <>
       <h1>Todo List</h1>
 
-      <div className="form-group">
+      <form onSubmit={(e) => { e.preventDefault(); addTodo(); }} className="form-group">
         <input
           type="text"
           name="name"
@@ -122,10 +125,10 @@ function ListGroup() {
             onChange={handleInputChange}
           />
         </label>
-        <button onClick={addTodo} className="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Add Todo
         </button>
-      </div>
+      </form>
 
       {items.length === 0 && <p>No items found</p>}
       <ul className="list-group">
@@ -145,5 +148,4 @@ function ListGroup() {
     </>
   );
 }
-
 export default ListGroup;
