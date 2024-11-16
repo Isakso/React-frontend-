@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tab, Tabs, Form, Button } from 'react-bootstrap';
 
-// Define the TodoItem interface
+
 interface TodoItem {
   _id: string;
   name: string;
